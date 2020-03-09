@@ -437,7 +437,15 @@ public class Database {
     }*/
 
     private void changeRecordStatus(String uuid){ //изменения статуса записи
-        String updateStatusCheckInformation = "UPDATE check_information SET isUnload = true WHERE uuid = \""+ uuid + "\"";
+        String updateStatusCheckInformation = String.format("UPDATE check_information SET isUnload = true WHERE uuid = \"%s\"", uuid);
         sendQuery(updateStatusCheckInformation);
+    }
+
+    public void updateVersionApp(String version, String code){
+        String updateVersionApp = "INSERT INTO settings (code,value) VALUES" +
+                "('"+ code + "','" + version + "')" +
+                "ON DUPLICATE KEY UPDATE value = '" + version+"'";
+       // Loggers.sql(updateVersionApp);
+        sendQuery(updateVersionApp);
     }
 }

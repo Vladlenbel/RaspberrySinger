@@ -19,7 +19,6 @@ public class Loggers {
     private static FileHandler fileHandler;
 
     public Loggers(){
-
         File dirForLog = new File((new File(".")).getAbsolutePath() + "//logs//");
         if(!dirForLog.exists()){
             dirForLog.mkdir();
@@ -31,7 +30,7 @@ public class Loggers {
             File logDir = new File("./logs/logger/");
             if( !(logDir.exists()) )
                 logDir.mkdir();
-            fileHandler = new FileHandler("logs/logger/log_ " + curDate);
+            fileHandler = new FileHandler("logs/logger/log_" + curDate);
         } catch (SecurityException | IOException e) {
             Loggers.error(e);
         }
