@@ -84,7 +84,7 @@ public class Database {
     private boolean isDatabaseExists(){
         int kol = 0;
         String sqlQuery = String.format("SHOW DATABASES like '%s'", Setting.databaseName);
-        Loggers.sql(sqlQuery);
+        Loggers.test(sqlQuery);
         try{
             connection = DriverManager.getConnection(url, user, password);
             statement = connection.createStatement();
@@ -109,7 +109,7 @@ public class Database {
     private boolean isAllTableExist(){
         String sqlQuery = String.format("SELECT TABLE_NAME as tables " +
                 "FROM information_schema.tables where TABLE_SCHEMA =\"%s\"", Setting.databaseName);
-        Loggers.sql(sqlQuery);
+        Loggers.test(sqlQuery);
         ArrayList<String> tablesInDB = new ArrayList<>();
         try{
             connection = DriverManager.getConnection(url, user, password);
@@ -177,15 +177,19 @@ public class Database {
         if( Boolean.parseBoolean(personalData.get("isRegistered")) ) {
             personalNumber = personalData.get("personalNumber");
 
+           // boolean isFirstCome = isFirstCom(personalData.get("personalNumber"));
+            //boolean isFirstCome = Boolean.parseBoolean(ge)
+            int directionOrIsFirsCome = getDirectionOrFirstCome(personalData.get("personalNumber"));
             statusCom = statusWorker(
                     timeCheck,
-                    personalData.get("personalNumber"),
-                    Integer.parseInt(personalData.get("workerHourId"))
+                    Integer.parseInt(personalData.get("workerHourId")),
+                    directionOrIsFirsCome
+                   // isFirstCome
             ); //проверка статуса входа
 
             String message = getMessages(personalData.get("personalNumber"), statusCom); //проверка наличия сообщений
 
-            if (isFirstCom(personalData.get("personalNumber"))) { //проверка на день рождения и первый вход для поздравления
+            if (directionOrIsFirsCome == 0) { //проверка на день рождения и первый вход для поздравления
                 String birthdayString = personalData.get("birthday");
                 SimpleDateFormat birDateFormat = new SimpleDateFormat("YYYY");
                 String curBirDate = birDateFormat.format(new Date());
@@ -207,7 +211,7 @@ public class Database {
                 soundAnswer += "exit,";
             }
             soundAnswer += getSoundName(personalData.get("personalNumber"));
-            Loggers.sql("Out string for play: " + soundAnswer);
+            Loggers.info("Out string for play: " + soundAnswer);
         } else {
             personalNumber = workerCardNum;
             soundAnswer = "unknownNumberCard";
@@ -287,16 +291,17 @@ public class Database {
         return fileName;
     }
 
-    private int statusWorker (String curDate, String personalNumber,int workerHourId) {
+    private int statusWorker (String curDate, int workerHourId, int directionOrIsFirsCome/* boolean isFirstCome*/) {
         int status;
-        int isLate = isLate(curDate, personalNumber, workerHourId);
-        int direction = direction(personalNumber);
-        if(isLate == 0){
-            status = 101;
-        } else if(isLate == 1){
-            status =  102;
-        } else if(isLate == 2 && direction == 100 ||
-                direction == 101 || direction == 102){
+        if ( directionOrIsFirsCome == 0 ) { Loggers.sql("i her");
+            if (isLate(curDate, workerHourId)) {
+                status = 101;
+            } else {
+                status = 102;
+            }
+        } else if( directionOrIsFirsCome == 100 ||
+                   directionOrIsFirsCome == 101 ||
+                   directionOrIsFirsCome == 102){
             status =  200;
         } else {
             status =  100;
@@ -304,27 +309,9 @@ public class Database {
         Loggers.sql("Status worker: " + status);
         return status;
     }
-    private int direction(String personalNumber) {
-        int direction = 0;
-        String query = String.format("SELECT idStatus FROM check_information WHERE personalNumber ='%s'", personalNumber);
-        Loggers.sql(query);
-        try{
-            connection = DriverManager.getConnection(url, user, password);
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(query);
 
-            while (resultSet.next()) {
-                direction = Integer.parseInt(resultSet.getString("idStatus"));
-            }
-        }catch (SQLException e) {
-            Loggers.error(e);
-        } finally {
-            closeDB();
-        }
-        return  direction;
-    }
+    private boolean isLate (String date, int workerHourId) {
 
-    private int isLate (String date, String personalNumber, int workerHourId) {
         String timeFromWorkingHourType = null;
         SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
         String curDate = dateFormat.format(new Date());
@@ -347,29 +334,27 @@ public class Database {
             Date notLateTime = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").parse(timeFromWorkingHourType);
 
             Loggers.sql("now date = " + nowDate + " notLateTime = " + notLateTime);
-            boolean isFirstCome = isFirstCom(personalNumber);
-            if (nowDate.compareTo(notLateTime) > 0 && isFirstCome ) { //опоздание
-                return 0;
-            }
-            if (nowDate.compareTo(notLateTime) < 0 && isFirstCome ) { //первый вход не опоздание
-                return 1;
-            }
+
+            return nowDate.compareTo(notLateTime) > 0;
+
         }catch (SQLException | ParseException e) {
             Loggers.error(e);
         } finally {
             closeDB();
         }
-        return 2;
+
+        return false;
     }
 
-    private boolean isFirstCom (String personalNumber) {
-        boolean isFirstCome = true;
+    private int getDirectionOrFirstCome (String personalNumber){ //проверка первого входа и направления
+
+        int directonOrFirstCome = 0;
         SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
         String curDate = dateFormat.format(new Date());
         curDate += " 23:59:59";
         String curDates = dateFormat.format(new Date());
 
-        String query = String.format("SELECT * FROM check_information WHERE personalNumber ='%s' AND timeCheck >= '%s' AND timeCheck <= '%s' ;", personalNumber, curDates, curDate);
+        String query = String.format("SELECT * FROM check_information WHERE personalNumber ='%s' AND timeCheck >= '%s' AND timeCheck <= '%s' order by id DESC LIMIT 1;", personalNumber, curDates, curDate);
         Loggers.sql(query);
         try{
             connection = DriverManager.getConnection(url, user, password);
@@ -377,15 +362,16 @@ public class Database {
             resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
-                isFirstCome = false;
+                directonOrFirstCome = Integer.parseInt(resultSet.getString("idStatus"));
             }
         }catch (SQLException e) {
             Loggers.error(e);
         } finally {
             closeDB();
         }
-        Loggers.sql( "isFirstCome" + isFirstCome);
-        return  isFirstCome;
+        Loggers.sql( "isFirstComeOrDirection: " + directonOrFirstCome);
+
+        return  directonOrFirstCome;
     }
 
     private String getMessages(String personalNumber, int statusId) {
@@ -421,7 +407,6 @@ public class Database {
                     sendQuery(updateMes);
                 }
             }
-
         }catch (SQLException e) {
             Loggers.error(e);
         } finally {

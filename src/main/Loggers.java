@@ -1,8 +1,6 @@
 package main;
 
-import service.IniReader;
 import service.Setting;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,7 +17,6 @@ import java.util.logging.Logger;
 public class Loggers {
     private static Logger LOGGER = Logger.getLogger(Loggers.class.getName());
     private static FileHandler fileHandler;
-    private static IniReader iniReader = new IniReader();
 
     public Loggers(){
 
@@ -137,7 +134,6 @@ public class Loggers {
             }else{
                 LOGGER.warning("Dir can't created: " + dir.getName() );
             }
-            iniReader.read(); //чтение ini файла
         }
 
         File filePath = new File((new File(".")).getAbsolutePath() + "//logs//"+curDay+"//" +  fileName + "_" + curDay+ ".log");

@@ -68,7 +68,6 @@ public class ThreadPlayer extends Thread{ //поток для последова
                     }
                     Loggers.error(e,"threadListenerFirst");
                 }
-                new ThreadInfoDownloader(answerFromLocalDB, isUnload).run();
 
                 List<String> fileListToPlay = new ArrayList<>();
                 Collections.addAll(fileListToPlay, filePlay.split(","));
@@ -100,6 +99,7 @@ public class ThreadPlayer extends Thread{ //поток для последова
                     }
 
                 }
+                new ThreadInfoDownloader(answerFromLocalDB, isUnload).run();
             }
         }
     }
