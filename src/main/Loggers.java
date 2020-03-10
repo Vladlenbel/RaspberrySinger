@@ -21,15 +21,27 @@ public class Loggers {
     public Loggers(){
         File dirForLog = new File((new File(".")).getAbsolutePath() + "//logs//");
         if(!dirForLog.exists()){
-            dirForLog.mkdir();
+            if (!dirForLog.mkdir()){
+                LOGGER.warning("dir logs can't create");
+            }
         }
+
+        File logDirApp = new File("./logs/appLog/");
+        if( !(logDirApp.exists()) ) {
+           if ( !logDirApp.mkdir() ){
+               LOGGER.warning("dir appLog can't create");
+           }
+        }
+
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy");
         String curDate = sdf.format(new Date());
         try {
             File logDir = new File("./logs/logger/");
             if( !(logDir.exists()) )
-                logDir.mkdir();
+                if ( !logDir.mkdir() ){
+                    LOGGER.warning("dir logger can't create");
+                }
             fileHandler = new FileHandler("logs/logger/log_" + curDate);
         } catch (SecurityException | IOException e) {
             Loggers.error(e);
@@ -120,7 +132,7 @@ public class Loggers {
         }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd_MM_yyyy");
         String curDay = simpleDateFormat.format(new Date());
-        File dir = new File((new File(".")).getAbsolutePath() + "//logs//"+curDay);
+        File dir = new File((new File(".")).getAbsolutePath() + "//logs//appLog//"+curDay);
 
         if(!dir.exists()){
             boolean created = dir.mkdir();
@@ -135,7 +147,7 @@ public class Loggers {
             }
         }
 
-        File filePath = new File((new File(".")).getAbsolutePath() + "//logs//"+curDay+"//" +  fileName + "_" + curDay+ ".log");
+        File filePath = new File((new File(".")).getAbsolutePath() + "//logs//appLog//"+curDay+"//" +  fileName + "_" + curDay+ ".log");
 
         SimpleDateFormat sdfLog = new SimpleDateFormat("[dd-MM-yyyy  HH:mm:ss.SSSXXX] ");
         String curDateLog = sdfLog.format(new Date());
@@ -144,7 +156,9 @@ public class Loggers {
 
 
         if (!filePath.exists()) {
-            filePath.createNewFile();
+            if (!filePath.createNewFile()){
+                LOGGER.warning("Can't create file " + filePath.getName());
+            }
             LOGGER.info("File created: " + filePath.getName());
         }
         Files.write(Paths.get(filePath.toString()), textToFile.getBytes(), StandardOpenOption.APPEND);
@@ -161,7 +175,8 @@ public class Loggers {
             try {
                 attrs = Files.readAttributes(file, BasicFileAttributes.class);
             } catch (IOException e) {
-                e.printStackTrace();
+              //  e.printStackTrace();
+                LOGGER.warning(e.getMessage());
             }
             long diff = (new Date().getTime() - attrs.creationTime().toMillis()) / (24 * 60 * 60 * 1000);
             if (diff >= Setting.daySaveLog) {

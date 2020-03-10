@@ -441,11 +441,10 @@ public class Database {
         sendQuery(updateStatusCheckInformation);
     }
 
-    public void updateVersionApp(String version, String code){
-        String updateVersionApp = "INSERT INTO settings (code,value) VALUES" +
-                "('"+ code + "','" + version + "')" +
+    public void updateVersionInSetting(String version, String code){
+        String updateVersionApp = "INSERT INTO settings (code,value) VALUES " +
+                "('"+ code + "','" + version + "') " +
                 "ON DUPLICATE KEY UPDATE value = '" + version+"'";
-       // Loggers.sql(updateVersionApp);
         sendQuery(updateVersionApp);
     }
 }

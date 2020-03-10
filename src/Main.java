@@ -14,11 +14,12 @@ public class Main {
         new Loggers();
         iniReader.read();
 
-        Database database = new Database();
-        database.updateVersionApp("1.0.1", "versionApp");
-        database.updateVersionApp("1.1", "versionBase");
-        database.updateVersionApp("0.0", "versionServer");
         Loggers.info("Main start");
+
+        Database database = new Database();
+        database.updateVersionInSetting("1.0.2", "versionApp");
+        database.updateVersionInSetting("1.1", "versionBase");
+        database.updateVersionInSetting("0.0", "versionServer");
 
         new ThreadListener().start();
         new ThreadPlayer().start();
