@@ -38,7 +38,7 @@ public final class Setting {
     public static boolean havUnsendInfo = false;
 
     static void validate(){ //проверка наличия обязательных параметров
-        Loggers.test("Validating");
+        Loggers.service("Validating");
         if (!getSerialNumber()){
             player.startPlay("NoSerialNumber");
             player.startPlay("exitApp");
@@ -122,7 +122,7 @@ public final class Setting {
                 if(matcher.find()){
                     String serialNumber = matcher.group(0).substring(1).trim();
                     Setting.serialNumber = serialNumber;
-                    Loggers.test("Serial number " + serialNumber);
+                    Loggers.service("Serial number " + serialNumber);
                     return true;
                 }else {
                     Loggers.error("Failed to get device serial number");

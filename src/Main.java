@@ -4,6 +4,7 @@ import playSoundFile.Player;
 import playSoundFile.ThreadListener;
 import playSoundFile.ThreadPlayer;
 import service.IniReader;
+import service.Service;
 
 public class Main {
 
@@ -17,12 +18,13 @@ public class Main {
         Loggers.info("Main start");
 
         Database database = new Database();
-        database.updateVersionInSetting("1.0.2", "versionApp");
+        database.updateVersionInSetting("1.0.3", "versionApp");
         database.updateVersionInSetting("1.1", "versionBase");
         database.updateVersionInSetting("0.0", "versionServer");
 
         new ThreadListener().start();
         new ThreadPlayer().start();
+        new Service().start();
 
         player.startPlay("systemready");
         Loggers.info("System Ready");

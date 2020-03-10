@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 
 public class Loggers {
-    private static Logger LOGGER = Logger.getLogger(Loggers.class.getName());
+    public static Logger LOGGER = Logger.getLogger(Loggers.class.getName());
     private static FileHandler fileHandler;
 
     public Loggers(){
@@ -49,7 +49,7 @@ public class Loggers {
         LOGGER.addHandler(fileHandler);
     }
 
-    public static void test(String message){ //логирование тестирования информации о системе
+    public static void service(String message){ //логирование тестирования информации о системе
         prepareLine(message, "info_log");
     }
 
@@ -139,7 +139,6 @@ public class Loggers {
             //обнуление информации об ошибках и неотправленной информации за день
             Setting.havUnsendInfo = false;
             Setting.havError = false;
-            deleteOldLogs(); //удаление старых папок логов
             if(created) {
                 LOGGER.info("Dir created: " + dir.getName());
             }else{
@@ -162,30 +161,5 @@ public class Loggers {
             LOGGER.info("File created: " + filePath.getName());
         }
         Files.write(Paths.get(filePath.toString()), textToFile.getBytes(), StandardOpenOption.APPEND);
-    }
-
-    private static void deleteOldLogs(){
-        String directory = (new File(".")).getAbsolutePath() + "//logs//";
-        File path = new File(directory);
-        String[] listDir = path.list();
-        LOGGER.info( "List File" + listDir.length);
-        for (String dir : listDir) {
-            Path file = Paths.get(directory).resolve(dir);
-            BasicFileAttributes attrs = null;
-            try {
-                attrs = Files.readAttributes(file, BasicFileAttributes.class);
-            } catch (IOException e) {
-              //  e.printStackTrace();
-                LOGGER.warning(e.getMessage());
-            }
-            long diff = (new Date().getTime() - attrs.creationTime().toMillis()) / (24 * 60 * 60 * 1000);
-            if (diff >= Setting.daySaveLog) {
-                LOGGER.info("deliting directory with old logs " + dir);
-                if (new File(directory + dir).delete()) {
-                    LOGGER.info("directory successful deleted");
-                }
-
-            }
-        }
     }
 }

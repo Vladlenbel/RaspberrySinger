@@ -29,69 +29,69 @@ public class IniReader {
                         switch (nameVariableSetting){
                             case ("serverIp"):
                                 Setting.serverIp = values[1].trim();
-                                Loggers.test("serverIp OK");
+                                Loggers.service("serverIp OK");
                                 break;
                             case ("serverPort"):
                                 Setting.serverPort = values[1].trim();
-                                Loggers.test("serverPort OK");
+                                Loggers.service("serverPort OK");
                                 break;
                             case ("masterNumber"):
-                                Loggers.test("masterNumber OK");
+                                Loggers.service("masterNumber OK");
                                 String masterNumber = values[1].trim().replace(" ","");
                                 Setting.masterNumber.addAll(Arrays.asList(masterNumber.substring(1,masterNumber.length()-1).split(",")));
                                 break;
                             case ("databaseName"):
                                 Setting.databaseName = values[1].trim();
-                                Loggers.test("databaseName OK");
+                                Loggers.service("databaseName OK");
                                 break;
                             case ("sqlPort"):
                                 Setting.sqlPort = values[1].trim();
-                                Loggers.test("sqlPort OK");
+                                Loggers.service("sqlPort OK");
                                 break;
                             case ("soundDirectory"):
                                 Setting.soundDirectory = values[1].trim();
-                                Loggers.test("soundDirectory OK");
+                                Loggers.service("soundDirectory OK");
                                 break;
                             case ("sqlLogin"):
                                 Setting.sqlLogin = values[1].trim();
-                                Loggers.test("masterNumber OK");
+                                Loggers.service("masterNumber OK");
                                 break;
                             case ("sqlPassword"):
                                 Setting.sqlPassword = values[1].trim();
-                                Loggers.test("sqlPassword OK");
+                                Loggers.service("sqlPassword OK");
                                 break;
                             case ("requiredTables"):
-                                Loggers.test("requiredTables OK");
+                                Loggers.service("requiredTables OK");
                                 String tables = values[1].trim().replace(" ","");
                                 Setting.requiredTables.addAll(Arrays.asList(tables.substring(1,tables.length()-1).split(",")));
                                 break;
                             case ("loggerLevel"):
                                 Setting.loggerLevel = Integer.parseInt(values[1].trim());
-                                Loggers.test("loggerLevel OK");
+                                Loggers.service("loggerLevel OK");
                                 break;
                             case ("daySaveLog"):
                                 Setting.daySaveLog = Integer.parseInt(values[1].trim());
-                                Loggers.test("daySaveLog OK");
+                                Loggers.service("daySaveLog OK");
                                 break;
                             case ("serverSoundDirectory"):
                                 Setting.serverSoundDirectory = values[1].trim();
-                                Loggers.test("serverSoundDirectory OK");
+                                Loggers.service("serverSoundDirectory OK");
                                 break;
                             case ("logUnsendInfo"):
                                 Setting.logUnsendInfo = Boolean.parseBoolean(values[1].trim());
-                                Loggers.test("logUnsendInfo OK " + Boolean.parseBoolean(values[1].trim()));
+                                Loggers.service("logUnsendInfo OK " + Boolean.parseBoolean(values[1].trim()));
                                 break;
                             case ("sayStatusToAdmin"):
                                 Setting.sayStatusToAdmin = Boolean.parseBoolean(values[1].trim());
-                                Loggers.test("sayStatusToAdmin OK " + Boolean.parseBoolean(values[1].trim()));
+                                Loggers.service("sayStatusToAdmin OK " + Boolean.parseBoolean(values[1].trim()));
                                 break;
                             case ("writeAllLogsInSingleFile"):
                                 Setting.writeAllLogsInSingleFile = Boolean.parseBoolean(values[1].trim());
-                                Loggers.test("writeAllLogsInSingleFile OK");
+                                Loggers.service("writeAllLogsInSingleFile OK");
                                 break;
                             case ("readIniWhenAdminCome"):
                                 Setting.readIniWhenAdminCome = Boolean.parseBoolean(values[1].trim());
-                                Loggers.test("readIniWhenAdminCome OK");
+                                Loggers.service("readIniWhenAdminCome OK");
                                 break;
                         }
                     }

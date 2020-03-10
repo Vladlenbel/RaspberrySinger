@@ -84,7 +84,7 @@ public class Database {
     private boolean isDatabaseExists(){
         int kol = 0;
         String sqlQuery = String.format("SHOW DATABASES like '%s'", Setting.databaseName);
-        Loggers.test(sqlQuery);
+        Loggers.service(sqlQuery);
         try{
             connection = DriverManager.getConnection(url, user, password);
             statement = connection.createStatement();
@@ -98,7 +98,7 @@ public class Database {
             closeDB();
         }
         if (kol > 0 ) {
-            Loggers.test("DB created");
+            Loggers.service("DB created");
             return true;
         }else {
             Loggers.error("DB not created");
@@ -109,7 +109,7 @@ public class Database {
     private boolean isAllTableExist(){
         String sqlQuery = String.format("SELECT TABLE_NAME as tables " +
                 "FROM information_schema.tables where TABLE_SCHEMA =\"%s\"", Setting.databaseName);
-        Loggers.test(sqlQuery);
+        Loggers.service(sqlQuery);
         ArrayList<String> tablesInDB = new ArrayList<>();
         try{
             connection = DriverManager.getConnection(url, user, password);
@@ -125,7 +125,7 @@ public class Database {
             closeDB();
         }
         if(tablesInDB.containsAll(Setting.requiredTables)){
-            Loggers.test("All table contains");
+            Loggers.service("All table contains");
             return true;
         }else {
             for (String tabInSetting: Setting.requiredTables ) {
