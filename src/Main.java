@@ -18,9 +18,8 @@ public class Main {
         Loggers.info("Main start");
 
         Database database = new Database();
-        database.updateVersionInSetting("1.0.3", "versionApp");
+        database.updateVersionInSetting("1.0.4", "versionApp");
         database.updateVersionInSetting("1.1", "versionBase");
-        database.updateVersionInSetting("0.0", "versionServer");
 
         new ThreadListener().start();
         new ThreadPlayer().start();

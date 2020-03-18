@@ -19,8 +19,3 @@ public class ThreadInfoDownloader extends Thread{ //класс для запис
         database.loadIntoLocalDB(infoForLoad, isUnload);
     }
 }
-
-
-
-/*ALTER TABLE `raspberry_schema`.`check_information`
-ADD COLUMN `uuid` VARCHAR(50) NULL AFTER `isUnload`;*/

@@ -7,10 +7,9 @@ import java.io.IOException;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 public class Database {
@@ -84,7 +83,7 @@ public class Database {
     private boolean isDatabaseExists(){
         int kol = 0;
         String sqlQuery = String.format("SHOW DATABASES like '%s'", Setting.databaseName);
-        Loggers.service(sqlQuery);
+        Loggers.sql(sqlQuery);
         try{
             connection = DriverManager.getConnection(url, user, password);
             statement = connection.createStatement();
@@ -109,7 +108,7 @@ public class Database {
     private boolean isAllTableExist(){
         String sqlQuery = String.format("SELECT TABLE_NAME as tables " +
                 "FROM information_schema.tables where TABLE_SCHEMA =\"%s\"", Setting.databaseName);
-        Loggers.service(sqlQuery);
+        Loggers.sql(sqlQuery);
         ArrayList<String> tablesInDB = new ArrayList<>();
         try{
             connection = DriverManager.getConnection(url, user, password);
@@ -148,7 +147,7 @@ public class Database {
         String uuid =  UUID.randomUUID().toString();
         String queryInsertCheckInformation = "INSERT INTO check_information (workerCardNum,idStatus,serialNo," +
                 "personalNumber,timeCheck,isUnload, uuid ) VALUES(" +
-                "\"" + infoForLoad.get("workerIdNum") + "\""  + "," +
+                "\"" + infoForLoad.get("workerCardNum") + "\""  + "," +
                 "\"" + Integer.parseInt(infoForLoad.get("statusCom")) + "\"" +  "," +
                 "\"" + Setting.serialNumber  + "\""  + "," +
                 "\"" + infoForLoad.get("personalNumber") + "\"" +  "," +
@@ -177,14 +176,11 @@ public class Database {
         if( Boolean.parseBoolean(personalData.get("isRegistered")) ) {
             personalNumber = personalData.get("personalNumber");
 
-           // boolean isFirstCome = isFirstCom(personalData.get("personalNumber"));
-            //boolean isFirstCome = Boolean.parseBoolean(ge)
             int directionOrIsFirsCome = getDirectionOrFirstCome(personalData.get("personalNumber"));
             statusCom = statusWorker(
                     timeCheck,
                     Integer.parseInt(personalData.get("workerHourId")),
                     directionOrIsFirsCome
-                   // isFirstCome
             ); //проверка статуса входа
 
             String message = getMessages(personalData.get("personalNumber"), statusCom); //проверка наличия сообщений
@@ -220,7 +216,7 @@ public class Database {
         answerFromLocalBase.put("filePlay",soundAnswer);
         answerFromLocalBase.put("isAdmin",personalData.get("isAdmin"));
 
-        answerFromLocalBase.put("workerIdNum",workerCardNum);
+        answerFromLocalBase.put("workerCardNum",workerCardNum);
         answerFromLocalBase.put("statusCom",Integer.toString(statusCom));
         answerFromLocalBase.put("timeCheck",timeCheck);
         answerFromLocalBase.put("personalNumber",personalNumber);
@@ -348,7 +344,7 @@ public class Database {
 
     private int getDirectionOrFirstCome (String personalNumber){ //проверка первого входа и направления
 
-        int directonOrFirstCome = 0;
+        int directionOrFirstCome = 0;
         SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
         String curDate = dateFormat.format(new Date());
         curDate += " 23:59:59";
@@ -362,16 +358,16 @@ public class Database {
             resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
-                directonOrFirstCome = Integer.parseInt(resultSet.getString("idStatus"));
+                directionOrFirstCome = Integer.parseInt(resultSet.getString("idStatus"));
             }
         }catch (SQLException e) {
             Loggers.error(e);
         } finally {
             closeDB();
         }
-        Loggers.sql( "isFirstComeOrDirection: " + directonOrFirstCome);
+        Loggers.sql( "isFirstComeOrDirection: " + directionOrFirstCome);
 
-        return  directonOrFirstCome;
+        return  directionOrFirstCome;
     }
 
     private String getMessages(String personalNumber, int statusId) {
@@ -420,7 +416,7 @@ public class Database {
     private void logUnsentInfo(HashMap<String, String> infoForLoad, String uuid){
 
         String queryToRemoteServer = "INSERT INTO worker VALUES(" +
-                "\"" +  infoForLoad.get("workerIdNum") + "\""  + "," +
+                "\"" +  infoForLoad.get("workerCardNum") + "\""  + "," +
                 "\"" + infoForLoad.get("timeCheck")  + "\"" +  "," +
                 "\"" + infoForLoad.get("personalNumber")  + "\""  + "," +
                 "\"" + infoForLoad.get("statusCom") + "\"" + ");" ;
@@ -428,7 +424,7 @@ public class Database {
             Loggers.unsendInfo(queryToRemoteServer);
             changeRecordStatus(uuid);
         } catch (IOException e) {
-            LOGGER.warning("writeLog unsend info Exception: " + e.getMessage());
+            LOGGER.warning("WriteLog unsend info Exception: " + e.getMessage());
         }
     }
 
