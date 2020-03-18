@@ -6,8 +6,8 @@ import service.Setting;
 import java.io.File;
 import java.io.IOException;
 
-public class Player //класс для воспроизведения аудиофайлов
-{
+public class Player {  //класс для воспроизведения аудиофайлов
+
     private FileDownload fileDownload = new FileDownload();
     
     public void startPlay(String fileToPlay) {
@@ -21,7 +21,7 @@ public class Player //класс для воспроизведения ауди�
         String[] commands = {"aplay", filePath + fileToPlay + ".wav"};
 
         ProcessBuilder pb = new ProcessBuilder(commands);
-        Loggers.info(" command  " + commands[1]);
+        Loggers.debug(" command  " + commands[1]);
         Process process = null;
         try {
             process = pb.start();
@@ -58,10 +58,5 @@ public class Player //класс для воспроизведения ауди�
             Loggers.error(e,"error while waifFor equal zero PB" );
         }
     }
-    
-    /*public int isActive(){
-        int isActive = 0;
-        return isActive;
-    }*/
 }
 

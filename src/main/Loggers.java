@@ -4,10 +4,8 @@ import service.Setting;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.FileHandler;
@@ -22,14 +20,14 @@ public class Loggers {
         File dirForLog = new File((new File(".")).getAbsolutePath() + "//logs//");
         if(!dirForLog.exists()){
             if (!dirForLog.mkdir()){
-                LOGGER.warning("dir logs can't create");
+                LOGGER.warning("Dir logs can't create");
             }
         }
 
         File logDirApp = new File("./logs/appLog/");
         if( !(logDirApp.exists()) ) {
            if ( !logDirApp.mkdir() ){
-               LOGGER.warning("dir appLog can't create");
+               LOGGER.warning("Dir appLog can't create");
            }
         }
 
@@ -40,7 +38,7 @@ public class Loggers {
             File logDir = new File("./logs/logger/");
             if( !(logDir.exists()) )
                 if ( !logDir.mkdir() ){
-                    LOGGER.warning("dir logger can't create");
+                    LOGGER.warning("Dir logger can't create");
                 }
             fileHandler = new FileHandler("logs/logger/log_" + curDate);
         } catch (SecurityException | IOException e) {
@@ -110,8 +108,7 @@ public class Loggers {
         try {
             writeLog(messageToLog, "error_log");
         } catch (IOException e) {
-          //  LOGGER.warning("File can't created: " + filePath.getName());
-            LOGGER.warning("writeLog Exception: " + e.getMessage());
+            LOGGER.warning("WriteLog Exception: " + e.getMessage());
         }
     }
 
@@ -121,7 +118,7 @@ public class Loggers {
         try {
             writeLog(messageToLog, fileName);
         } catch (IOException e) {
-            LOGGER.warning("writeLog Exception: " + e.getMessage());
+            LOGGER.warning("WriteLog Exception: " + e.getMessage());
         }
     }
 
