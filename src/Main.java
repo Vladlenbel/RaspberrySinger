@@ -16,6 +16,8 @@ public class Main {
         iniReader.read();
 
         Loggers.info("Main start");
+        Loggers.service("App started on version 1.0.5");
+        Loggers.service("App started on base version 1.1.1");
 
         Database database = new Database();
         database.updateVersionInSetting("1.0.5", "versionApp");
