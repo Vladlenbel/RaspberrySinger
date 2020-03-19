@@ -443,4 +443,24 @@ public class Database {
                 "ON DUPLICATE KEY UPDATE value = '" + version+"'";
         sendQuery(updateVersionApp);
     }
+
+    public String getValueSetting(String code){
+        String getVersion = String.format("SELECT value from settings where code = \"%s\"", code);
+        Loggers.sql(getVersion);
+        String value = "";
+        try{
+            connection = DriverManager.getConnection(url, user, password);
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(getVersion);
+
+            while (resultSet.next()) {
+                value = resultSet.getString("value");
+            }
+        }catch (SQLException e) {
+            Loggers.error(e);
+        } finally {
+            closeDB();
+        }
+        return value;
+    }
 }

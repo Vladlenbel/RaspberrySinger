@@ -27,7 +27,7 @@ public final class Setting {
     public static String soundDirectory = "";
     public static ArrayList<String> masterNumber = new ArrayList<>();
     public static int loggerLevel = 0;
-    public static int daySaveLog = 30;
+    static int daySaveLog = 30;
     public static boolean logUnsendInfo = false;
     public static String serialNumber = "0";
     public static boolean sayStatusToAdmin = false;
@@ -99,6 +99,8 @@ public final class Setting {
         }
         Database database = new Database(); //проверка работоспособности и наличия необходимого в БД
         database.validateDB();
+        Loggers.service("App version - " + database.getValueSetting("versionApp"));
+        Loggers.service("Base version - " + database.getValueSetting("versionBase"));
     }
 
     private static  boolean getSerialNumber(){ //получение серийного номера оборудования
@@ -160,4 +162,6 @@ public final class Setting {
         havError = false;
         havUnsendInfo = false;
     }
+
+
 }
