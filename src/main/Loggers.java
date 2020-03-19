@@ -30,8 +30,15 @@ public class Loggers {
                LOGGER.warning("Dir appLog can't create");
            }
         }
+        createNewFileLogger();
+    }
 
-
+    public static void createNewFileLogger(){
+        try{
+            fileHandler.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy");
         String curDate = sdf.format(new Date());
         try {
@@ -40,7 +47,8 @@ public class Loggers {
                 if ( !logDir.mkdir() ){
                     LOGGER.warning("Dir logger can't create");
                 }
-            fileHandler = new FileHandler("logs/logger/log_" + curDate);
+            fileHandler = new FileHandler("logs/logger/log_" + curDate+".log");
+
         } catch (SecurityException | IOException e) {
             Loggers.error(e);
         }

@@ -1,10 +1,8 @@
 package service;
 
-import main.Database;
 import main.Loggers;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,14 +30,17 @@ public class Service  extends Thread {
             Loggers.debug("Time scheduler work on " + new Date());
             if (hour == 3) { //работа по рассписании в 03 ( перечитывание ini файла, и удаление старых логов
                 Loggers.service("Task scheduler start");
+                Loggers.createNewFileLogger(); //создание нового файла лога
+                Loggers.LOGGER.info("Starting new day");
                 iniReader.read();
-                deleteOldLogs();
+                deleteOldLogs((new File(".")).getAbsolutePath() + "//logs/appLog//");
+                deleteOldLogs((new File(".")).getAbsolutePath() + "//logs/logger//");
                 Loggers.service("Task scheduler finish");
             }
         }
 
-        private void deleteOldLogs(){
-            String directory = (new File(".")).getAbsolutePath() + "//logs/appLog//";
+        private void deleteOldLogs(String directory){
+          //  String directory = (new File(".")).getAbsolutePath() + "//logs/appLog//";
             File path = new File(directory);
             String[] listDir = path.list();
             Loggers.LOGGER.info( "Count directories: " + listDir.length);
