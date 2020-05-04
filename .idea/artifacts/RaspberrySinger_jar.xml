@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="RaspberrySinger:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/RaspberrySinger_jar</output-path>
+    <root id="archive" name="RaspberrySinger.jar">
+      <element id="module-output" name="RaspberrySinger" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../Java libraries/gson-2.8.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../Java libraries/mysql-connector-java-5.1.48/mysql-connector-java-5.1.48-bin.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

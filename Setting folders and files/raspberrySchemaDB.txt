@@ -1,0 +1,65 @@
+use raspberry_schema;
+create table IF NOT EXISTS department
+(
+   id int not null auto_increment,
+   name varchar(255),
+   workerHourType int,
+   primary key (id)
+);
+
+create table IF NOT EXISTS working_hour
+(
+    id int not null auto_increment,
+    startWork time,
+    finishWork time,
+    startDinner time,
+    finishDinner time,
+    primary key (id)
+);
+
+ALTER TABLE department 
+ADD FOREIGN KEY (workerHourType) REFERENCES working_hour (id);
+
+create table IF NOT EXISTS message
+(
+    id int not null auto_increment,
+    personalNumber varchar(50),
+    fileName varchar(255),
+    isCompleted int,
+	notificationType varchar(50),
+    primary key (id)
+);
+
+create table IF NOT EXISTS sound_info
+(
+    id int not null auto_increment,
+	personalNumber varchar(50), 
+    fileName varchar(255),
+    primary key (id)
+);
+
+create table IF NOT EXISTS worker_personal_data
+(
+	id int not null auto_increment,
+	personalNumber varchar(50), 
+    workerCardNum varchar(50),
+    birthday date,
+    workerHourId int,
+    departmentId int,
+    status int,
+    isAdmin bool,
+    primary key (id)
+);
+
+
+create table IF NOT EXISTS check_information
+(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    workerCardNum varchar(50),
+    idStatus int,
+    serialNo int,
+    personalNumber varchar(50), 
+    timeCheck timestamp,
+    isUnload bool,
+
+)AUTO_INCREMENT = 1;

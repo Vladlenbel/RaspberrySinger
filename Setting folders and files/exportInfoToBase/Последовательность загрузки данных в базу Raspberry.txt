@@ -1,0 +1,5 @@
+Последовательность загрузки данных в базу Raspberry
+1. worker_personal_data
+2. sound_info
+3. working_hour
+4. department

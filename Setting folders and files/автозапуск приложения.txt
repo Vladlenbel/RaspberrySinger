@@ -1,0 +1,5 @@
+//Добавить в конец файла /home/pi/.bashrc
+
+
+cd Desktop/
+sudo cat /dev/ttyUSB0 | java -jar RaspberrySinger.jar
