@@ -1,0 +1,17 @@
+Установка mySQL на Raspbian и настройка phpMyAdmin на новых версиях уже marian-db
+1. sudo apt-get update
+2. sudo apt-get upgrade
+3. sudo apt-get install mysql-server
+4. Может попросить(но скорее нет) пароль для пользователя root.
+5. sudo mysql -u root -p - Команда для входа под root
+	phpMyAdmin не дает возможноси заходить под пользователем root,поэтому нужно сделать еще одного пользователя
+Заходим в БД под пользователем root и создаем нового пользователя
+6. GRANT ALL PRIVILEGES ON *.* TO 'username'@'localhost' IDENTIFIED BY 'password';
+Установка phpMyAdmin
+1. sudo apt-get install apache2 -y - установка Apache сервера
+2. sudo apt install phpmyadmin
+Конфигурация для Apache сервера
+3. sudo nano /etc/apache2/apache2.conf и дописываем в конец файла Include /etc/phpmyadmin/apache.conf
+4. Перезагружаем сервис sudo service apache2 restart
+
+Проверяем доступность phpMyAdmin по адресу localhost/phpmyadmin

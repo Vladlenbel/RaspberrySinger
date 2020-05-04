@@ -1,0 +1,28 @@
+/* answerFromLocalDB = database.loadIntoLocalDB(listenNumberCard);
+                main.Loggers.debug(answerFromLocalDB);
+                try {
+                    serverAnswerFileName = playSoundFile.Server.getConnection(listenNumberCard);
+                    if(serverAnswerFileName.equals(answerFromLocalDB)){
+                        filePlay = answerFromLocalDB;
+                    }else {
+                        filePlay = serverAnswerFileName;
+                    }
+                   // serverAnswerFileName = getConnection(listenNumberCard);
+                   // Main.threadInfoDownloader.sendToServer();
+                } catch (Exception e) {
+                    //serverAnswerFileName = "vlad";
+                    //Main.threadInfoDownloader.addRecord(listenNumberCard);
+                    if (service.Setting.logUnsendInfo){
+                        database.logUnsendInfo(1);
+                    }
+                    if (!answerFromLocalDB.isEmpty()){
+                        filePlay = answerFromLocalDB;
+                    }else {
+                        filePlay = "noAnswerServerAndDb";
+                    }
+                    main.Loggers.error(e,"threadListenerFirst");
+                }
+                synchronized (Main.queueToPlay) {
+                    Main.queueToPlay.add(filePlay);
+                    Main.queueToPlay.notify();
+                }*/

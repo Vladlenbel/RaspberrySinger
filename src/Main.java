@@ -16,12 +16,10 @@ public class Main {
         iniReader.read();
 
         Loggers.info("Main start");
-        Loggers.service("App started on version 1.0.5");
-        Loggers.service("App started on base version 1.1.1");
 
         Database database = new Database();
-        database.updateVersionInSetting("1.0.5", "versionApp");
-        database.updateVersionInSetting("1.1", "versionBase");
+        database.updateVersionInSetting("1.x.x", "versionApp");
+        database.updateVersionInSetting("1.x", "versionBase");
 
         new ThreadListener().start();
         new ThreadPlayer().start();
