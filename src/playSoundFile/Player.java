@@ -29,6 +29,7 @@ public class Player {  //класс для воспроизведения ауд
             Loggers.error(e);
         }
 
+
         try {
             if (process.waitFor() > 1 ){
                 Loggers.debug("This process has enrich value");

@@ -14,7 +14,7 @@ public class Server {
     String  getConnection(String listenNumberCard) throws Exception {
         URL id_card = new URL("http://" + Setting.serverIp + ":" + Setting.serverPort +
                                 "//AddRecord/AddRecord?id="+listenNumberCard);
-        Loggers.debug(id_card.toString());
+        Loggers.serverСommunication(id_card.toString());
         URLConnection urlCon = id_card.openConnection();
         BufferedReader in = new BufferedReader(
                                  new InputStreamReader(
@@ -24,7 +24,7 @@ public class Server {
         String files = null;
         while((inputLine = in.readLine()) != null)
             files = inputLine;
-        Loggers.info("serverAns: " + files);
+        Loggers.serverСommunication("serverAns: " + files);
         in.close();
 
         return files;

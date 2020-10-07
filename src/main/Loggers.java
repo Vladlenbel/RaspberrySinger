@@ -83,6 +83,12 @@ public class Loggers {
         }
     }
 
+    public static void serverСommunication(String message) {
+        if (Setting.loggerLevel >= 1) {
+            prepareLine(message, "info_log");
+        }
+    }
+
     public static void error(Exception exception){
         Setting.havError = true;
         prepareLine(exception,"");
@@ -121,8 +127,10 @@ public class Loggers {
     }
 
     static private void prepareLine(String message, String fileName) {
-        String messageToLog = ": [" + Thread.currentThread().getStackTrace()[2].getMethodName().toUpperCase() +"] " + Thread.currentThread().getStackTrace()[3].getClassName() + " >> "+
-                            Thread.currentThread().getStackTrace()[3].getMethodName() + " : " +"{"+ message + "}\n";
+        String messageToLog = ": [" +
+                Thread.currentThread().getStackTrace()[2].getMethodName().toUpperCase() +"] " +
+                Thread.currentThread().getStackTrace()[3].getClassName() + " >> " +
+                Thread.currentThread().getStackTrace()[3].getMethodName() + " : " +"{"+ message + "}\n";
         try {
             writeLog(messageToLog, fileName);
         } catch (IOException e) {
@@ -151,7 +159,10 @@ public class Loggers {
             }
         }
 
-        File filePath = new File((new File(".")).getAbsolutePath() + "//logs//appLog//"+curDay+"//" +  fileName + "_" + curDay+ ".log");
+        File filePath = new File((
+                new File(".")).getAbsolutePath()
+                + "//logs//appLog//"+curDay+"//" +  fileName + "_"
+                + curDay+ ".log");
 
         SimpleDateFormat sdfLog = new SimpleDateFormat("[dd-MM-yyyy  HH:mm:ss.SSSXXX] ");
         String curDateLog = sdfLog.format(new Date());
